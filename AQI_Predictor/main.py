@@ -421,7 +421,6 @@ elif page == "Regression Models for AQI Prediction":
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    @st.cache_resource
     def train_models(_X_train, _y_train):
         rf = RandomForestRegressor(n_estimators=300, random_state=42, n_jobs=-1)
         xgb_model = xgb.XGBRegressor(n_estimators=300, learning_rate=0.1, max_depth=6, random_state=42, n_jobs=-1)
@@ -508,15 +507,12 @@ elif page == "Classification Models for AQI Category":
     X_test_scaled = scaler.transform(X_test)
 
     # Cache models
-    @st.cache_resource
     def train_logistic():
         return LogisticRegression(multi_class='multinomial', solver='lbfgs', max_iter=1000)
 
-    @st.cache_resource
     def train_rf_clf():
         return RandomForestClassifier(n_estimators=500, random_state=42, n_jobs=-1)
 
-    @st.cache_resource
     def train_xgb_clf():
         return xgb.XGBClassifier(
             n_estimators=300,
@@ -526,7 +522,6 @@ elif page == "Classification Models for AQI Category":
             eval_metric='mlogloss'
         )
 
-    @st.cache_resource
     def train_knn():
         return KNeighborsClassifier(n_neighbors=6, weights='uniform')
 
@@ -875,7 +870,7 @@ elif page == "Feature Importance Summary":
         X_test_scaled = scaler.transform(X_test)
         
         # Train Random Forest for feature importance
-        @st.cache_resource
+    
         def get_feature_importance():
             rf = RandomForestRegressor(n_estimators=300, random_state=42, n_jobs=-1)
             rf.fit(X_train_scaled, y_train)
